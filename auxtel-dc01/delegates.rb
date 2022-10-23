@@ -223,7 +223,16 @@ class CustomDelegate
            options = identifier.split('$')
            tokens = options[0].split('_')
            image = "#{tokens[0]}_#{tokens[1]}_#{tokens[2]}_#{tokens[3]}"
-           folder = "/data/ats/ccs-ipa/#{tokens[2]}/#{image}"
+           folder = {}
+           folder["raw"] = "/data/ats/ccs-ipa/#{tokens[2]}/#{image}"
+           folder["RubinTV"] = "/repo/LATISS/LATISS/runs/quickLook/1/quickLookExp/#{tokens[2]}/#{image}"
+           source = "raw"
+	   for option in options
+              keyValue = option.split('=')
+              if keyValue[0] == "source"
+                 source = keyValue[1] 
+              end
+           end
            puts folder
            puts tokens[4]
            puts image
@@ -231,7 +240,7 @@ class CustomDelegate
            if options.length()>1
               File.write(file,"\#" + options[1, options.length()].join("\n\#")+"\n")
            end
-           system("ls -1 #{folder}/*#{tokens[4]}*.fits >> '#{file}'")
+           system("ls -1 #{folder[source]}/*.fits >> '#{file}'")
         end
 	puts file
         return file
