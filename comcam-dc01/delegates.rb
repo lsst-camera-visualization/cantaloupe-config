@@ -226,10 +226,10 @@ class CustomDelegate
            dmimage = "%s%05d" % [tokens[2],tokens[3].to_i]
            #puts dmimage
            folder = {}
-           folder["raw"] = "/net/ccs-data/data/ccs-ipa/#{tokens[2]}/#{image}"
-           folder["RubinTV"] = "/repo/LSSTComCam/LSSTComCam/quickLook/*/postISRCCD/#{tokens[2]}/#{image}"
-           folder["postISR"] = "/repo/LSSTComCam/LSSTComCam/quickLook/*/postISRCCD/#{tokens[2]}/#{image}/*{image}*.fits"
-           folder["calexp"] = "/repo/LSSTComCam/LSSTComCam/quickLook/*/calexp/#{tokens[2]}/*/*/#{dmimage}/*{dmimage}*.fits"
+           folder["raw"] = "/net/ccs-data/data/ccs-ipa/#{tokens[2]}/#{image}/*.fits"
+           folder["RubinTV"] = "/repo/LSSTComCam/LSSTComCam/quickLook/*/postISRCCD/#{tokens[2]}/#{image}/*#{image}*.fits"
+           folder["postISR"] = "/repo/LSSTComCam/LSSTComCam/quickLook/*/postISRCCD/#{tokens[2]}/#{image}/*#{image}*.fits"
+           folder["calexp"] = "/repo/LSSTComCam/LSSTComCam/quickLook/*/calexp/#{tokens[2]}/*/*/#{dmimage}/*#{dmimage}*.fits"
            source "raw"
            for option in options
               keyValue = option.split('=')
@@ -245,7 +245,7 @@ class CustomDelegate
            if options.length()>1
               File.write(tmpFile,"\#" + options[1, options.length()].join("\n\#")+"\n")
            end
-           rc = system("ls -1 #{folder[source]}/*.fits >> '#{tmpFile}'")
+           rc = system("ls -1 #{folder[source]} >> '#{tmpFile}'")
            if !rc
               File.delete(file)
            else
