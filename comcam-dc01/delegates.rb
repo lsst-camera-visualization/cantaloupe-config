@@ -227,9 +227,9 @@ class CustomDelegate
            #puts dmimage
            folder = {}
            folder["raw"] = "/net/ccs-data/data/ccs-ipa/#{tokens[2]}/#{image}"
-           folder["RubinTV"] = "/repo/LSSTComCam/LSSTComCam/quickLook/2/postISRCCD/#{tokens[2]}/#{image}"
-           folder["postISR"] = "/repo/LSSTComCam/LSSTComCam/quickLook/2/postISRCCD/#{tokens[2]}/#{image}"
-           folder["calexp"] = "/repo/LSSTComCam/LSSTComCam/quickLook/2/calexp/#{tokens[2]}/*/*/#{dmimage}"
+           folder["RubinTV"] = "/repo/LSSTComCam/LSSTComCam/quickLook/*/postISRCCD/#{tokens[2]}/#{image}"
+           folder["postISR"] = "/repo/LSSTComCam/LSSTComCam/quickLook/*/postISRCCD/#{tokens[2]}/#{image}/*{image}*.fits"
+           folder["calexp"] = "/repo/LSSTComCam/LSSTComCam/quickLook/*/calexp/#{tokens[2]}/*/*/#{dmimage}/*{dmimage}*.fits"
            source "raw"
            for option in options
               keyValue = option.split('=')
