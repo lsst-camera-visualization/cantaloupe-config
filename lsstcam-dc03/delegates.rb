@@ -223,6 +223,8 @@ class CustomDelegate
          $connection_pool.setJdbcUrl("jdbc:mysql://lsstcam-db01.cp.lsst.org:3306/ccsdbprod?serverTimezone=UTC&autoReconnect=true")
          $connection_pool.setUsername("ccs")
          $connection_pool.setPassword("ccs23")
+         $connection_pool.setMinimumIdle(1)
+         $connection_pool.setMaximumPoolSize(5)
       end
       return $connection_pool
   end
