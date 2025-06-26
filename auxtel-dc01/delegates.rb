@@ -233,16 +233,24 @@ class CustomDelegate
                  source = keyValue[1] 
               end
            end
-           puts folder
-           puts tokens[4]
-           puts image
-           puts file
+           #puts folder
+           #puts tokens[4]
+           #puts image
+           #puts file
+           tmpFile = file + rand(1000000).to_s
            if options.length()>1
-              File.write(file,"\#" + options[1, options.length()].join("\n\#")+"\n")
+              File.write(tmpFile,"\#" + options[1, options.length()].join("\n\#")+"\n")
            end
-           system("ls -1 #{folder[source]}/*.fits >> '#{file}'")
+           # Don't keep file if ls fails
+           rc = system("ls -1 #{folder[source]}/*.fits >> '#{tmpFile}'") 
+           #puts rc
+           if !rc
+              File.delete(file)
+           else
+              File.rename(tmpFile,file)
+           end
         end
-	puts file
+	#puts file
         return file
      end
      puts file

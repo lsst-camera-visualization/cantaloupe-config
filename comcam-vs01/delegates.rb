@@ -214,7 +214,7 @@ class CustomDelegate
   #                      given identifier, or nil if not found.
   #
   def filesystemsource_pathname(options = {})
-     context.each{ |k,v| puts "#{k}: #{v}" }
+     context.each{ |k,v| puts "KV: #{k}: #{v}" }
      identifier = context['identifier']
      file = "/home/tonyj/images/#{identifier}"
      if !File.file?(file)
@@ -223,15 +223,34 @@ class CustomDelegate
            options = identifier.split('$')
            tokens = options[0].split('_')
            image = "#{tokens[0]}_#{tokens[1]}_#{tokens[2]}_#{tokens[3]}"
-           folder = "/net/ccs-data/data/ccs-ipa/#{tokens[2]}/#{image}"
-           puts folder
-           puts tokens[4]
-           puts image
-           puts file
-           if options.length()>1
-              File.write(file,"\#" + options[1, options.length()].join("\n\#")+"\n")
+           dmimage = "%s%05d" % [tokens[2],tokens[3].to_i]
+           #puts dmimage
+           folder = {}
+           folder["raw"] = "/net/ccs-data/data/ccs-ipa/#{tokens[2]}/#{image}/*.fits"
+           folder["RubinTV"] = "/repo/LSSTComCam/LSSTComCam/quickLook/*/postISRCCD/#{tokens[2]}/#{image}/*#{image}*.fits"
+           folder["postISR"] = "/repo/LSSTComCam/LSSTComCam/quickLook/*/postISRCCD/#{tokens[2]}/#{image}/*#{image}*.fits"
+           folder["calexp"] = "/repo/LSSTComCam/LSSTComCam/quickLook/*/calexp/#{tokens[2]}/*/*/#{dmimage}/*#{dmimage}*.fits"
+           source "raw"
+           for option in options
+              keyValue = option.split('=')
+              if keyValue[0] == "source"
+                 source = keyValue[1]
+              end
            end
-           system("ls -1 #{folder}/*#{tokens[4]}*.fits >> '#{file}'")
+           #puts folder
+           #puts tokens[4]
+           #puts image
+           #puts file
+           tmpFile = file + rand(1000000).to_s
+           if options.length()>1
+              File.write(tmpFile,"\#" + options[1, options.length()].join("\n\#")+"\n")
+           end
+           rc = system("ls -1 #{folder[source]} >> '#{tmpFile}'")
+           if !rc
+              File.delete(file)
+           else
+              File.rename(tmpFile,file)
+           end
         end
 	puts file
         return file
