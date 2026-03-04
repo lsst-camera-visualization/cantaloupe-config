@@ -220,7 +220,7 @@ class CustomDelegate
   def shared_connection_pool()
       if ($connection_pool == nil)
          $connection_pool = com.zaxxer.hikari.HikariDataSource.new()
-         $connection_pool.setJdbcUrl("jdbc:mysql://lsstcam-db01.cp.lsst.org:3306/ccsdbprod?serverTimezone=UTC&autoReconnect=true")
+         $connection_pool.setJdbcUrl("jdbc:mysql://lsstcam-db02.cp.lsst.org:3306/ccsdbprod?serverTimezone=UTC&autoReconnect=true")
          $connection_pool.setUsername("ccs")
          $connection_pool.setPassword("ccs23")
          $connection_pool.setMinimumIdle(1)
